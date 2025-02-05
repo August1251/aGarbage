@@ -1,0 +1,5 @@
+name: aTrash
+version: '1.0.0'
+main: org.august.trash.aTrash
+api-version: '1.13'
+author: August1251
