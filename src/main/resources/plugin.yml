@@ -1,5 +1,5 @@
-name: aTrash
-version: '1.0.0'
-main: org.august.trash.aTrash
+name: aGarbage
+version: '1.1.0'
+main: org.august.garbage.aGarbage
 api-version: '1.13'
 author: August1251
