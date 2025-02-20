@@ -1,0 +1,71 @@
+messages:
+  garbage-command-open:
+    enabled: false
+    message:
+      - "You opened the garbage."
+  garbage-manager-command-usage:
+    enabled: true
+    message:
+      - "/garbagemanager help"
+
+inventories:
+  garbage:
+    size: 27
+    title: "Garbage"
+    slots:
+      - "YYYYYYYYY"
+      - "xxxxxxxxx"
+      - "YYYYTYYYY"
+    items:
+      Y:
+        type: "decorate"
+        material: "gray_stained_glass_pane"
+        amount: 1
+        name: ""
+        lore:
+         - ""
+        enchantments:
+         - ""
+        itemFlags:
+         - ""
+      T:
+        type: "throw"
+        material: "hopper"
+        amount: 1
+        name: ""
+        lore:
+         - ""
+        enchantments:
+         - ""
+        itemFlags:
+         - ""
+  confirm:
+    size: 27
+    title: "Garbage"
+    slots:
+      - "YYYxxxNNN"
+      - "YYYxxxNNN"
+      - "YYYxxxNNN"
+    items:
+      Y:
+        type: "accept"
+        material: "lime_concrete"
+        amount: 1
+        name: ""
+        lore:
+         - ""
+        enchantments:
+         - ""
+        itemFlags:
+         - ""
+      N:
+        type: "cancel"
+        material: "red_concrete"
+        amount: 1
+        name: ""
+        lore:
+         - ""
+        enchantments:
+         - ""
+        itemFlags:
+         - ""
