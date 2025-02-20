@@ -20,7 +20,7 @@ public class GarbageRepository {
         return Holder.INSTANCE;
     }
 
-    private static aGarbage trash;
+    private static aGarbage garbage;
     private File file;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
@@ -28,7 +28,7 @@ public class GarbageRepository {
 
     public void makeFile() {
 
-        file = new File(trash.getDataFolder(), "garbage.json");
+        file = new File(garbage.getDataFolder(), "garbage.json");
 
         try {
             boolean fileNotExists = file.createNewFile();
@@ -75,7 +75,7 @@ public class GarbageRepository {
         }
     }
 
-    public void setTrash(aGarbage trash) {
-        GarbageRepository.trash = trash;
+    public void setGarbage(aGarbage garbage) {
+        GarbageRepository.garbage = garbage;
     }
 }

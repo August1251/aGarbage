@@ -4,14 +4,24 @@ import java.util.Objects;
 
 public class GarbageModel {
 
+    private String creator;
     private int x;
     private int y;
     private int z;
 
-    public GarbageModel(int x, int y, int z) {
+    public GarbageModel(String creator, int x, int y, int z) {
+        this.creator = creator;
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public int getX() {
@@ -40,13 +50,14 @@ public class GarbageModel {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof GarbageModel that)) return false;
-        return getX() == that.getX() && getY() == that.getY() && getZ() == that.getZ();
+        if (o == null || getClass() != o.getClass()) return false;
+        GarbageModel that = (GarbageModel) o;
+        return x == that.x && y == that.y && z == that.z && Objects.equals(creator, that.creator);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getX(), getY(), getZ());
+        return Objects.hash(creator, x, y, z);
     }
 
 }
