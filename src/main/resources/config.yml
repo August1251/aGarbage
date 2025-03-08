@@ -1,71 +1,78 @@
-messages:
-  garbage-command-open:
-    enabled: false
+messages: #Messages
+  garbage-command-open: #Message when player opens trash
+    enabled: false #Enable or disable message
     message:
-      - "You opened the garbage."
-  garbage-manager-command-usage:
-    enabled: true
-    message:
-      - "/garbagemanager help"
+      - "You opened the garbage." #Message
+
+command: #A trash command
+  trash: #Name of command
+    description: "Garbage" #The command description
+    usage: "/trash" #The command usage
+    aliases: #The command aliases (alternative names)
+      - "garbage"
 
 inventories:
-  garbage:
-    size: 27
-    title: "Garbage"
+  garbage: #Garbage inventory
+    size: 27 #Inventory size
+    title: "Garbage" #Inventory title
+    #Every slot getting from items section.
+    #If you need empty slot, enter: "x"
     slots:
       - "YYYYYYYYY"
       - "xxxxxxxxx"
       - "YYYYTYYYY"
-    items:
-      Y:
-        type: "decorate"
-        material: "gray_stained_glass_pane"
-        amount: 1
-        name: ""
-        lore:
+    items: #Items section
+      Y: #Id of item by unique and use it in slots section.
+        type: "decorate" #Type of item, use: "decorate" if you need decoration item
+        material: "gray_stained_glass_pane" #Material of item
+        amount: 1 #Item amount
+        name: "" #Item name
+        lore: #Lore of item
          - ""
-        enchantments:
+        enchantments: #Enchantments of item, use: "enchantment:level", example: "unbreaking:1"
          - ""
-        itemFlags:
+        itemFlags: #Item flags of item, usage: "ITEMFLAG", example: "HIDE_ATTRIBUTES"
          - ""
-      T:
-        type: "throw"
-        material: "hopper"
-        amount: 1
-        name: ""
-        lore:
+      T: #Id of item by unique and use it in slots section.
+        type: "throw" #Type of item, use: "throw" If you need that when a player clicks on an item, they will be taken to the item discard confirmation inventory.
+        material: "hopper" #Material of item
+        amount: 1 #Item amount
+        name: "" #Item name
+        lore: #Lore of item
          - ""
-        enchantments:
+        enchantments: #Enchantments of item, use: "enchantment:level", example: "unbreaking:1"
          - ""
-        itemFlags:
+        itemFlags: #Item flags of item, usage: "ITEMFLAG", example: "HIDE_ATTRIBUTES"
          - ""
-  confirm:
-    size: 27
-    title: "Garbage"
+  confirm: #Confirm inventory
+    size: 27 #Inventory size
+    title: "Confirm" #Inventory title
+    #Every slot getting from items section.
+    #If you need empty slot, enter: "x"
     slots:
       - "YYYxxxNNN"
       - "YYYxxxNNN"
       - "YYYxxxNNN"
-    items:
-      Y:
-        type: "accept"
-        material: "lime_concrete"
-        amount: 1
-        name: ""
-        lore:
+    items: #Items section
+      Y: #Id of item by unique and use it in slots section.
+        type: "accept" #Type of item, use: "accept" If you need that when a player clicks on an item, it removes the items
+        material: "lime_concrete" #Material of item
+        amount: 1 #Item amount
+        name: "" #Item name
+        lore: #Lore of item
          - ""
-        enchantments:
+        enchantments: #Enchantments of item, use: "enchantment:level", example: "unbreaking:1"
          - ""
-        itemFlags:
+        itemFlags: #Item flags of item, usage: "ITEMFLAG", example: "HIDE_ATTRIBUTES"
          - ""
-      N:
-        type: "cancel"
-        material: "red_concrete"
-        amount: 1
-        name: ""
-        lore:
+      N: #Id of item by unique and use it in slots section.
+        type: "cancel" #Type of item, use: "cancel" If you need that when a player clicks on an item, it doesn't remove the items
+        material: "red_concrete" #Material of item
+        amount: 1 #Item amount
+        name: "" #Item name
+        lore: #Lore of item
          - ""
-        enchantments:
+        enchantments: #Enchantments of item, use: "enchantment:level", example: "unbreaking:1"
          - ""
-        itemFlags:
+        itemFlags: #Item flags of item, usage: "ITEMFLAG", example: "HIDE_ATTRIBUTES"
          - ""
