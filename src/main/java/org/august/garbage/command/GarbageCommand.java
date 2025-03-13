@@ -25,6 +25,11 @@ public class GarbageCommand extends Command {
             InventoryManager inventoryManager = new InventoryManager();
 
             Player player = (Player) sender;
+            if (!player.hasPermission(getName() + ".command")) {
+                messageManager.sendMessage(player, "garbage-command-do-not-have-permission");
+                return false;
+            }
+
             messageManager.sendMessage(player, "garbage-command-open");
 
             inventoryManager.makeInventory("garbage");

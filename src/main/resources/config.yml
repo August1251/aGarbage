@@ -1,10 +1,18 @@
+#If you are using a spigot, the plugin supports HEX, e.g. &#000000
+#If you are using paper, the plugin supports MiniMessage, such as <#000000>.
+#The plugin adapts to your core: paper or spigot.
 messages: #Messages
+  garbage-command-do-not-have-permission: #If you don't have permission to use command
+    enabled: false #Enable or disable message
+    message:
+      - "You don't have permission" #Message
   garbage-command-open: #Message when player opens trash
     enabled: false #Enable or disable message
     message:
       - "You opened the garbage." #Message
 
 command: #A trash command
+  #Permission name will be: trash.command
   trash: #Name of command
     description: "Garbage" #The command description
     usage: "/trash" #The command usage
