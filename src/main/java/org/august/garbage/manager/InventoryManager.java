@@ -4,6 +4,9 @@ import org.august.garbage.aGarbage;
 import org.august.garbage.configuration.InventoriesConfiguration;
 import org.august.garbage.dto.InventoryDto;
 import org.august.garbage.dto.ItemDto;
+import org.august.paper.PaperInventoryHandler;
+import org.august.shade.InventoryHandler;
+import org.august.spigot.SpigotInventoryHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -19,14 +22,23 @@ import java.util.List;
 public class InventoryManager {
 
     private final InventoriesConfiguration inventoriesConfiguration = InventoriesConfiguration.getInstance();
+    private InventoryHandler inventoryHandler;
     private InventoryDto inventoryDto;
     private static aGarbage garbage;
     private Inventory inventory;
     private List<ItemDto> items;
 
     public void makeInventory(String index) {
+
         inventoryDto = inventoriesConfiguration.getInventory(index);
-        inventory = Bukkit.createInventory(null, inventoryDto.getSize(), inventoryDto.getTitle());
+
+        if (Bukkit.getVersion().split("-")[1].equals("Spigot")) {
+            inventoryHandler = new SpigotInventoryHandler();
+            inventoryHandler.makeInventory(inventoryDto.getSize(), inventoryDto.getTitle());
+        } else {
+            inventoryHandler = new PaperInventoryHandler();
+            inventoryHandler.makeInventory(inventoryDto.getSize(), inventoryDto.getTitle());
+        }
         items = inventoryDto.getItems();
     }
 
@@ -37,8 +49,6 @@ public class InventoryManager {
 
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName(itemDto.getName());
-            if (itemDto.getName().isEmpty()) itemMeta.setDisplayName(" ");
-            if (!itemDto.getLore().getFirst().isEmpty()) itemMeta.setLore(itemDto.getLore());
 
             HashMap<Integer, Enchantment> enchantments = itemDto.getEnchantments();
             for (int i : enchantments.keySet()){
@@ -50,7 +60,8 @@ public class InventoryManager {
 
             itemStack.setItemMeta(itemMeta);
 
-            inventory.setItem(itemDto.getSlot(), itemStack);
+            inventoryHandler.addItem(itemDto.getSlot(), itemStack, itemDto.getName(), itemDto.getLore());
+
         }
     }
 
@@ -68,15 +79,11 @@ public class InventoryManager {
         return null;
     }
 
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
-    }
-
     public void closeInventory(Player player) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                player.closeInventory();
+                inventoryHandler.closeInventory(player);
             }
         }.runTaskLater(garbage, 1L);
     }
@@ -85,7 +92,7 @@ public class InventoryManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-                player.openInventory(inventory);
+                inventoryHandler.openInventory(player);
             }
         }.runTaskLater(garbage, 1L);
     }
@@ -95,7 +102,11 @@ public class InventoryManager {
     }
 
     public Inventory getInventory() {
-        return inventory;
+        return inventoryHandler.getInventory();
+    }
+
+    public void setInventory(Inventory inventory) {
+        inventoryHandler.setInventory(inventory);
     }
 
     public static void setGarbage(aGarbage garbage) {

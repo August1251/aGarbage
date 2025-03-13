@@ -1,1 +1,4 @@
 rootProject.name = 'aGarbage'
+include ':cores:shade'
+include ':cores:paper'
+include ':cores:spigot'

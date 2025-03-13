@@ -46,7 +46,7 @@ inventories:
          - ""
   confirm: #Confirm inventory
     size: 27 #Inventory size
-    title: "Confirm" #Inventory title
+    title: "<#000000>Confirm" #Inventory title
     #Every slot getting from items section.
     #If you need empty slot, enter: "x"
     slots:
@@ -58,7 +58,7 @@ inventories:
         type: "accept" #Type of item, use: "accept" If you need that when a player clicks on an item, it removes the items
         material: "lime_concrete" #Material of item
         amount: 1 #Item amount
-        name: "" #Item name
+        name: "<#000000>Y" #Item name
         lore: #Lore of item
          - ""
         enchantments: #Enchantments of item, use: "enchantment:level", example: "unbreaking:1"
