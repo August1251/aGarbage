@@ -4,6 +4,8 @@ import org.august.garbage.aGarbage;
 import org.august.garbage.configuration.InventoriesConfiguration;
 import org.august.garbage.dto.InventoryDto;
 import org.august.garbage.dto.ItemDto;
+import org.august.garbage.format.TextFormatter;
+import org.august.garbage.model.GarbageModel;
 import org.august.paper.PaperInventoryHandler;
 import org.august.shade.InventoryHandler;
 import org.august.spigot.SpigotInventoryHandler;
@@ -16,52 +18,77 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class InventoryManager {
 
     private final InventoriesConfiguration inventoriesConfiguration = InventoriesConfiguration.getInstance();
+    private final TextFormatter textFormatter = TextFormatter.getInstance();
     private InventoryHandler inventoryHandler;
     private InventoryDto inventoryDto;
     private static aGarbage garbage;
     private Inventory inventory;
     private List<ItemDto> items;
 
-    public void makeInventory(String index) {
-
+    public void makeInventory(Player player, String index, GarbageModel garbageModel) {
         inventoryDto = inventoriesConfiguration.getInventory(index);
-
         if (Bukkit.getVersion().split("-")[1].equals("Spigot")) {
             inventoryHandler = new SpigotInventoryHandler();
-            inventoryHandler.makeInventory(inventoryDto.getSize(), inventoryDto.getTitle());
+            inventoryHandler.makeInventory(inventoryDto.getSize(), textFormatter.getFormattedText(player, inventoryDto.getTitle(), garbageModel));
         } else {
             inventoryHandler = new PaperInventoryHandler();
-            inventoryHandler.makeInventory(inventoryDto.getSize(), inventoryDto.getTitle());
+            inventoryHandler.makeInventory(inventoryDto.getSize(), textFormatter.getFormattedText(player, inventoryDto.getTitle(), garbageModel));
         }
         items = inventoryDto.getItems();
     }
 
-    public void addItems() {
+    public void addItems(Player player, GarbageModel garbageModel) {
         for (ItemDto itemDto : items) {
             ItemStack itemStack = new ItemStack(itemDto.getMaterial());
             itemStack.setAmount(itemDto.getAmount());
 
             ItemMeta itemMeta = itemStack.getItemMeta();
-            itemMeta.setDisplayName(itemDto.getName());
+            if (!itemDto.getName().isBlank()) {
+                itemMeta.setDisplayName(textFormatter.getFormattedText(player, itemDto.getName(), garbageModel));
+            } else {
+                itemMeta.setDisplayName(" ");
+            }
 
             HashMap<Integer, Enchantment> enchantments = itemDto.getEnchantments();
+            List<String> lore = new ArrayList<>();
             for (int i : enchantments.keySet()){
                 itemStack.addEnchantment(enchantments.get(i), i);
             }
             for (ItemFlag itemFlag : itemDto.getItemFlags()) {
                 itemMeta.addItemFlags(itemFlag);
             }
+            for (String i : itemDto.getLore()) {
+                lore.add(textFormatter.getFormattedText(player, i, garbageModel));
+            }
 
             itemStack.setItemMeta(itemMeta);
 
-            inventoryHandler.addItem(itemDto.getSlot(), itemStack, itemDto.getName(), itemDto.getLore());
+            inventoryHandler.addItem(itemDto.getSlot(), itemStack, itemMeta.getDisplayName(), lore);
+        }
+    }
 
+    public void updateInventory(GarbageModel garbageModel) {
+        for (int i = 0; i < inventoryDto.getSize(); i++) {
+            if (existsItemAtSlot(i)) {
+                List<String> lores = new ArrayList<>();
+                for (String j : getItem(i).getLore()) {
+                    lores.add(textFormatter.getFormattedText(null, j, garbageModel));
+                }
+                inventoryHandler.updateItem(i, textFormatter.getFormattedText(null, getItem(i).getName(), garbageModel), lores);
+            }
+        }
+    }
+
+    public void resetInventory() {
+        for (int i = 0; i < inventoryDto.getSize(); i++) {
+            if (!existsItemAtSlot(i)) inventoryHandler.getInventory().remove(inventoryHandler.getInventory().getItem(i));
         }
     }
 
@@ -89,12 +116,7 @@ public class InventoryManager {
     }
 
     public void openInventory(Player player) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                inventoryHandler.openInventory(player);
-            }
-        }.runTaskLater(garbage, 1L);
+        inventoryHandler.openInventory(player);
     }
 
     public InventoryDto getInventoryDto() {

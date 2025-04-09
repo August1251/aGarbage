@@ -12,6 +12,7 @@ public abstract class InventoryHandler {
 
     public abstract void makeInventory(int size, String title);
     public abstract void addItem(int slot, ItemStack itemStack, String displayName, List<String> lore);
+    public abstract void updateItem(int slot, String displayName, List<String> lore);
 
     public void openInventory(Player player) {
         player.openInventory(inventory);

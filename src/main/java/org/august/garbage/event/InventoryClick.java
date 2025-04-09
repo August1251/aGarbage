@@ -2,6 +2,7 @@ package org.august.garbage.event;
 
 import org.august.garbage.dto.ItemDto;
 import org.august.garbage.manager.InventoryManager;
+import org.august.garbage.storage.GarbageStorage;
 import org.august.garbage.storage.InventoriesStorage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class InventoryClick implements Listener {
 
     private final InventoriesStorage inventoriesStorage = InventoriesStorage.getInstance();
+    private final GarbageStorage garbageStorage = GarbageStorage.getInstance();
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
@@ -21,9 +23,12 @@ public class InventoryClick implements Listener {
         Inventory inventory = event.getView().getTopInventory();
         UUID uuid = player.getUniqueId();
 
-        if (!inventoriesStorage.existsInventory(uuid)) return;
-
         InventoryManager inventoryManager = inventoriesStorage.existsConfirm(uuid) ? inventoriesStorage.getConfirm(uuid) : inventoriesStorage.getInventory(uuid);
+        if (garbageStorage.isGarbageExists(player)) {
+            inventoryManager = garbageStorage.getGarbageModel(player).getInventoryManager();
+        } else {
+            return;
+        }
 
         if (inventoryManager.existsItemAtSlot(event.getSlot())) {
             ItemDto itemDto = inventoryManager.getItem(event.getSlot());
@@ -34,8 +39,8 @@ public class InventoryClick implements Listener {
                     inventoryManager.setInventory(inventory);
 
                     InventoryManager confirmInventory = new InventoryManager();
-                    confirmInventory.makeInventory("confirm");
-                    confirmInventory.addItems();
+                    confirmInventory.makeInventory(player, "confirm", null);
+                    confirmInventory.addItems(player, null);
                     confirmInventory.closeInventory(player);
 
                     inventoriesStorage.addConfirm(uuid, confirmInventory);

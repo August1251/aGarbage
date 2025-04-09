@@ -3,6 +3,7 @@ package org.august.garbage.event;
 import org.august.garbage.aGarbage;
 import org.august.garbage.dto.InventoryDto;
 import org.august.garbage.manager.InventoryManager;
+import org.august.garbage.storage.GarbageStorage;
 import org.august.garbage.storage.InventoriesStorage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class InventoryClose implements Listener {
 
     private final InventoriesStorage inventoriesStorage = InventoriesStorage.getInstance();
+    private final GarbageStorage garbageStorage = GarbageStorage.getInstance();
     private final aGarbage garbage;
 
     public InventoryClose(aGarbage garbage) {
