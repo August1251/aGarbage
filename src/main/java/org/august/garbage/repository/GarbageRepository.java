@@ -28,7 +28,7 @@ public class GarbageRepository {
     private static aGarbage garbage;
     private File file;
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+    private ObjectWriter objectWriter;
     private Set<GarbageModel> garbages = new HashSet<>();
 
     public void makeFile() {
@@ -41,6 +41,8 @@ public class GarbageRepository {
         objectMapper.registerModule(simpleModule);
 
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+        objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
 
         try {
             boolean fileNotExists = file.createNewFile();

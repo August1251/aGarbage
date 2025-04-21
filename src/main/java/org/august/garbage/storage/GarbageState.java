@@ -2,6 +2,6 @@ package org.august.garbage.storage;
 
 public enum GarbageState {
 
-    CREATE, REMOVE, OPEN
+    CREATE, REMOVE, CLOSE, OPEN
 
 }

@@ -17,7 +17,7 @@ public class CancelSubCommand extends SubCommand {
             return;
         }
         messageManager.sendMessage(player, "garbage-manager-cancel-successfully", null);
-        garbageStorage.removeGarbageModel(player);
+        garbageStorage.getGarbageModel(player).removePlayer(player);
     }
 
     @Override

@@ -3,6 +3,8 @@ package org.august.garbage.event;
 import org.august.garbage.aGarbage;
 import org.august.garbage.dto.InventoryDto;
 import org.august.garbage.manager.InventoryManager;
+import org.august.garbage.model.GarbageModel;
+import org.august.garbage.storage.GarbageState;
 import org.august.garbage.storage.GarbageStorage;
 import org.august.garbage.storage.InventoriesStorage;
 import org.bukkit.entity.Player;
@@ -28,8 +30,17 @@ public class InventoryClose implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        Inventory inventory = event.getView().getTopInventory();
+        Inventory inventory = player.getOpenInventory().getTopInventory();
         UUID uuid = player.getUniqueId();
+
+        if (garbageStorage.isGarbageExists(player)) {
+            if (garbageStorage.getGarbageModel(player).getGarbageState().equals(GarbageState.OPEN)) {
+                GarbageModel garbageModel = garbageStorage.getGarbageModel(player);
+                garbageModel.setGarbageState(GarbageState.CLOSE);
+                garbageModel.removePlayer(player);
+                garbageStorage.addGarbage(garbageModel);
+            }
+        }
 
         if (!inventoriesStorage.existsInventory(uuid)) {
             return;
@@ -78,7 +89,6 @@ public class InventoryClose implements Listener {
         if (inventoriesStorage.existsConfirm(uuid)) {
             if (!inventoriesStorage.getConfirm(uuid).getInventory().equals(inventory)) return;
             InventoryManager garbageInventory = inventoriesStorage.getInventory(uuid);
-            garbageInventory.closeInventory(player);
             garbageInventory.openInventory(player);
             new BukkitRunnable() {
                 @Override

@@ -24,7 +24,7 @@ public class TextFormatter {
 
         if (garbageModel == null) return text;
 
-        int time = (int) garbageModel.getLastExecutionTime();
+        int time = garbageModel.getTime();
         int hours = time / 3600;
         int minutes = (time % 3600) / 60;
         int seconds = time % 60;

@@ -2,24 +2,29 @@ package org.august.garbage.model;
 
 import org.august.garbage.manager.InventoryManager;
 import org.august.garbage.storage.GarbageState;
+import org.bukkit.entity.Player;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class GarbageModel {
 
     private String creator;
     private GarbageState garbageState;
     private InventoryManager inventoryManager;
-    private long reloadTime;
-    private long lastExecutionTime = 1;
+    private final Set<Player> players = new HashSet<>();
+    private static int time;
+    private String world;
     private int x;
     private int y;
     private int z;
 
     public GarbageModel() {}
 
-    public GarbageModel(String creator, int x, int y, int z) {
+    public GarbageModel(String creator, String world, int x, int y, int z) {
         this.creator = creator;
+        this.world = world;
         this.x = x;
         this.y = y;
         this.z = z;
@@ -49,16 +54,39 @@ public class GarbageModel {
         this.inventoryManager = inventoryManager;
     }
 
-    public long getReloadTime() {
-        return reloadTime;
+    public void addPlayer(Player player) {
+        players.add(player);
     }
 
-    public void setReloadTime(long reloadTime) {
-        this.reloadTime = reloadTime;
+    public boolean existsPlayer(Player player) {
+        for (Player p : players) {
+            if (p.equals(player)) return true;
+        }
+        return false;
     }
 
-    public long getLastExecutionTime() {
-        return lastExecutionTime;
+    public void removePlayer(Player player) {
+        players.remove(player);
+    }
+
+    public Set<Player> getPlayers() {
+        return players;
+    }
+
+    public String getWorld() {
+        return world;
+    }
+
+    public void setWorld(String world) {
+        this.world = world;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        GarbageModel.time = time;
     }
 
     public int getX() {
@@ -85,33 +113,22 @@ public class GarbageModel {
         this.z = z;
     }
 
-    public void decreaseTime() {
-        lastExecutionTime--;
+    public void executeMethod(int reloadTime) {
+        setTime(reloadTime);
+        getInventoryManager().resetInventory();
     }
 
-    public void resetLastExecutionTime() {
-        this.lastExecutionTime = reloadTime;
-    }
-
-    public boolean isTimeToExecute() {
-        return lastExecutionTime == 0;
-    }
-
-    public void executeMethod() {
-        inventoryManager.resetInventory();
-        resetLastExecutionTime();
-    }
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof GarbageModel)) return false;
         GarbageModel that = (GarbageModel) o;
-        return x == that.x && y == that.y && z == that.z;
+        return x == that.x && y == that.y && z == that.z && Objects.equals(world, that.world);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, z);
+        return Objects.hash(world, x, y, z);
     }
 
 }

@@ -17,7 +17,7 @@ public class RemoveSubCommand extends SubCommand {
         messageManager.sendMessage(player, "garbage-manager-remove-click-on-the-trash", null);
         GarbageModel garbageModel = new GarbageModel();
         garbageModel.setGarbageState(GarbageState.REMOVE);
-        garbageStorage.addGarbageModel(player, garbageModel);
+        garbageStorage.addGarbage(garbageModel);
     }
 
     @Override

@@ -1,3 +1,6 @@
+settings:
+  reload-time: 100 #All garbages reload time.
+
 #If you are using a spigot, the plugin supports HEX, e.g. &#000000
 #If you are using paper, the plugin supports MiniMessage, such as <#000000>.
 #The plugin adapts to your core: paper or spigot.
@@ -6,7 +9,7 @@ messages: #Messages
     enabled: true #Enable or disable message
     message:
       - "All commands:" #Message
-      - " - /garbagemanager create [garbage reload time] - creation a garbage."
+      - " - /garbagemanager create - creation a garbage."
       - " - /garbagemanager remove - remove garbage."
       - " - /garbagemanager cancel - undo garbage creation."
   garbage-manager-create-please-click-on-the-block: #You haven't finished creating the garbage
@@ -17,14 +20,6 @@ messages: #Messages
     enabled: true #Enable or disable message
     message:
       - "The block you clicked on has a garbage status" #Message
-  garbage-manager-create-you-need-to-enter-a-reload-time: #You haven't finished creating the garbage
-    enabled: true #Enable or disable message
-    message:
-      - "Usage: /garbagemanager create [reload time]" #Message
-  garbage-manager-create-reload-time-you-enter-not-number: #You haven't finished creating the garbage
-    enabled: true #Enable or disable message
-    message:
-      - "Reload time you entered is not number." #Message
   garbage-manager-create-you-have-not-finished-creating-the-garbage: #You haven't finished creating the garbage
     enabled: true #Enable or disable message
     message:

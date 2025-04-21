@@ -19,14 +19,11 @@ public class GarbageDeserialize extends StdDeserializer<GarbageModel> {
         JsonNode jsonNode = jsonParser.getCodec().readTree(jsonParser);
 
         String creator = jsonNode.get("creator").asText();
-        long reloadTime = jsonNode.get("reloadTime").asLong();
+        String world = jsonNode.get("world").asText();
         int x = jsonNode.get("x").asInt();
         int y = jsonNode.get("y").asInt();
         int z = jsonNode.get("z").asInt();
 
-        GarbageModel garbageModel = new GarbageModel(creator, x, y, z);
-        garbageModel.setReloadTime(reloadTime);
-
-        return garbageModel;
+        return new GarbageModel(creator, world, x, y, z);
     }
 }

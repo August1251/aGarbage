@@ -116,7 +116,12 @@ public class InventoryManager {
     }
 
     public void openInventory(Player player) {
-        inventoryHandler.openInventory(player);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                inventoryHandler.openInventory(player);
+            }
+        }.runTaskLater(garbage, 1L);
     }
 
     public InventoryDto getInventoryDto() {

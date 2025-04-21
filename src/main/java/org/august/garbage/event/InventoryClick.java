@@ -2,6 +2,7 @@ package org.august.garbage.event;
 
 import org.august.garbage.dto.ItemDto;
 import org.august.garbage.manager.InventoryManager;
+import org.august.garbage.storage.GarbageState;
 import org.august.garbage.storage.GarbageStorage;
 import org.august.garbage.storage.InventoriesStorage;
 import org.bukkit.entity.Player;
@@ -20,16 +21,21 @@ public class InventoryClick implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        Inventory inventory = event.getView().getTopInventory();
+        Inventory inventory = player.getOpenInventory().getTopInventory();
         UUID uuid = player.getUniqueId();
 
-        InventoryManager inventoryManager = inventoriesStorage.existsConfirm(uuid) ? inventoriesStorage.getConfirm(uuid) : inventoriesStorage.getInventory(uuid);
-        if (garbageStorage.isGarbageExists(player)) {
-            inventoryManager = garbageStorage.getGarbageModel(player).getInventoryManager();
-        } else {
+        if (!garbageStorage.isGarbageExists(player) && !inventoriesStorage.existsConfirm(uuid) && !inventoriesStorage.existsInventory(uuid)) {
             return;
         }
 
+        InventoryManager inventoryManager = inventoriesStorage.existsConfirm(uuid) ? inventoriesStorage.getConfirm(uuid) : inventoriesStorage.getInventory(uuid);
+        if (garbageStorage.isGarbageExists(player)) {
+            if (garbageStorage.getGarbageModel(player).getGarbageState().equals(GarbageState.OPEN)) {
+                inventoryManager = garbageStorage.getGarbageModel(player).getInventoryManager();
+            }
+        }
+
+        if (inventoryManager == null) return;
         if (inventoryManager.existsItemAtSlot(event.getSlot())) {
             ItemDto itemDto = inventoryManager.getItem(event.getSlot());
             if (!event.getClickedInventory().equals(inventoryManager.getInventory())) return;
@@ -61,6 +67,7 @@ public class InventoryClick implements Listener {
                 }
                 case CANCEL -> {
                     if (!inventoriesStorage.existsConfirm(uuid)) return;
+
                     InventoryManager garbageInventory = inventoriesStorage.getInventory(uuid);
                     garbageInventory.closeInventory(player);
                     inventoriesStorage.addInventory(uuid, garbageInventory);

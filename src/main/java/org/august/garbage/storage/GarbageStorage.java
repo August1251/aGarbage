@@ -5,12 +5,12 @@ import org.august.garbage.task.GarbageTask;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GarbageStorage {
 
-    private static final Map<Player, GarbageModel> garbageModels = new HashMap<>();
+    private static final Set<GarbageModel> garbages = new HashSet<>();
     private static GarbageTask garbageTask;
 
     private static class Holder {
@@ -21,32 +21,52 @@ public class GarbageStorage {
         return Holder.INSTANCE;
     }
 
-    public void addGarbageModel(Player player, GarbageModel garbageModel) {
-        garbageModels.put(player, garbageModel);
+    public void addGarbage(GarbageModel garbageModel) {
+        garbages.add(garbageModel);
+    }
+
+    public GarbageModel getGarbageModel(GarbageModel garbageModel) {
+        for (GarbageModel i : garbages) {
+            if (i.equals(garbageModel)) return i;
+        }
+        return null;
+    }
+
+    public void removeGarbage(GarbageModel garbageModel) {
+        garbages.removeIf(i -> i.equals(garbageModel));
     }
 
     public GarbageModel getGarbageModel(Player player) {
-        return garbageModels.get(player);
-    }
-
-    public void removeGarbageModel(Player player) {
-        garbageModels.remove(player);
+        for (GarbageModel i : garbages) {
+            for (Player p : i.getPlayers()) {
+                if (p.equals(player)) return i;
+            }
+        }
+        return null;
     }
 
     public boolean isGarbageExists(Player player) {
-        return garbageModels.containsKey(player);
+        for (GarbageModel garbageModel : garbages) {
+            for (Player p : garbageModel.getPlayers()) {
+                if (p.getName().equals(player.getName())) return true;
+            }
+        }
+        return false;
     }
 
     public boolean isGarbageExists(GarbageModel garbageModel) {
-        return garbageModels.containsValue(garbageModel);
+        for (GarbageModel gm : garbages) {
+            if (gm.equals(garbageModel)) return true;
+        }
+        return false;
     }
 
     public void setGarbageTask(BukkitRunnable bukkitRunnable) {
         GarbageStorage.garbageTask = (GarbageTask) bukkitRunnable;
     }
 
-    public Map<Player, GarbageModel> getGarbageModels() {
-        return garbageModels;
+    public Set<GarbageModel> getGarbages() {
+        return garbages;
     }
 
     public GarbageTask getGarbageTask() {
