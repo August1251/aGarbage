@@ -120,15 +120,27 @@ public class GarbageModel {
 
 
     @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof GarbageModel)) return false;
-        GarbageModel that = (GarbageModel) o;
-        return x == that.x && y == that.y && z == that.z && Objects.equals(world, that.world);
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        GarbageModel myObject = (GarbageModel) obj;
+        return x == myObject.x && y == myObject.y && z == myObject.z && Objects.equals(world, myObject.world);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(world, x, y, z);
+    }
+
+    @Override
+    public String toString() {
+        return "GarbageModel{" +
+                "z=" + z +
+                ", x=" + x +
+                ", y=" + y +
+                ", world='" + world + '\'' +
+                ", hashCode='" + hashCode() +
+                '}';
     }
 
 }

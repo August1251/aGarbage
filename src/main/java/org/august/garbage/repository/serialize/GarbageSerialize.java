@@ -20,8 +20,8 @@ public class GarbageSerialize extends StdSerializer<GarbageModel> {
         jsonGenerator.writeStringField("creator", garbageModel.getCreator());
         jsonGenerator.writeStringField("world", garbageModel.getWorld());
         jsonGenerator.writeNumberField("x", garbageModel.getX());
-        jsonGenerator.writeNumberField("y", garbageModel.getX());
-        jsonGenerator.writeNumberField("z", garbageModel.getX());
+        jsonGenerator.writeNumberField("y", garbageModel.getY());
+        jsonGenerator.writeNumberField("z", garbageModel.getZ());
 
         jsonGenerator.writeEndObject();
     }

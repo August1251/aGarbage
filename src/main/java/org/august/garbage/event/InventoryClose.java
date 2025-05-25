@@ -30,7 +30,6 @@ public class InventoryClose implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        Inventory inventory = player.getOpenInventory().getTopInventory();
         UUID uuid = player.getUniqueId();
 
         if (garbageStorage.isGarbageExists(player)) {
@@ -45,6 +44,8 @@ public class InventoryClose implements Listener {
         if (!inventoriesStorage.existsInventory(uuid)) {
             return;
         }
+
+        Inventory inventory = player.getOpenInventory().getTopInventory();
 
         if (inventoriesStorage.existsInventory(uuid) && !inventoriesStorage.existsConfirm(uuid)) {
             if (!inventoriesStorage.getInventory(uuid).getInventory().equals(inventory)) return;

@@ -1,5 +1,5 @@
 name: aGarbage
-version: '1.5.1'
+version: '1.5.2'
 main: org.august.garbage.aGarbage
 api-version: '1.13'
 author: August1251

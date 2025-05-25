@@ -47,6 +47,7 @@ public class GarbageRepository {
         try {
             boolean fileNotExists = file.createNewFile();
             if (!fileNotExists) return;
+            System.out.println(true);
             objectWriter.writeValue(file, garbages);
         } catch (IOException exception) {
             throw new RuntimeException(exception);
@@ -116,4 +117,5 @@ public class GarbageRepository {
     public void setGarbage(aGarbage garbage) {
         GarbageRepository.garbage = garbage;
     }
+
 }

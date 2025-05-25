@@ -49,9 +49,7 @@ public class PlayerInteract implements Listener {
                         }
                         garbageRepository.addGarbage(garbageModel);
                         messageManager.sendMessage(player, "garbage-manager-create-successfully", garbageModel);
-                        System.out.println(garbageStorage.getGarbages());
                         garbageStorage.removeGarbage(garbageModel);
-                        System.out.println(garbageStorage.getGarbages());
                         event.setCancelled(true);
                         return;
                     }
